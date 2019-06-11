@@ -25,7 +25,7 @@ const CapabilityForm = ({ onSubmit, initialValues, back, onBack, onInput }) => {
           { back &&
           <button
             type="button"
-            onClick={onBack}
+            onClick={onBack.bind(null, values)}
           >
             { back }
           </button>

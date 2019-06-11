@@ -3,9 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Field, Form, Formik } from 'formik';
+import DatePicker from '../DatePicker';
 
 // Styles
 import styles from '../../styles';
+
+// Validators
+import {
+  emailValidator,
+  requiredValidator,
+  ageValidator,
+} from '../../utils/validators';
 
 const ProfileForm = ({ onSubmit, initialValues, onBack, back, onInput }) => {
   return (
@@ -15,21 +23,112 @@ const ProfileForm = ({ onSubmit, initialValues, onBack, back, onInput }) => {
       initialValues={{
         fistName: initialValues.fistName,
         lastName: initialValues.lastName,
+        birthDate: initialValues.birthDate,
         email: initialValues.email,
+        address: initialValues.address,
+        gender: initialValues.gender,
       }}
     >
       {({ errors, touched, values }) => (
         <Form className="whatever">
-          { onInput(values) }
+          {
+            // Hook on change any value in form
+            onInput(values)
+          }
 
-          <Field name="fistName" placeholder="First name" />
-          <Field name="lastName" placeholder="Last name" />
-          <Field name="email" placeholder="Email" />
+          <div>
+            <Field
+              name="fistName"
+              placeholder="First name"
+              validate={requiredValidator}
+            />
+
+            {errors.fistName && touched.fistName && (
+              <div>{errors.fistName}</div>
+            )}
+          </div>
+
+          <div>
+            <Field
+              name="lastName"
+              placeholder="Last name"
+              validate={requiredValidator}
+            />
+
+            {errors.lastName && touched.lastName && (
+              <div>{errors.lastName}</div>
+            )}
+          </div>
+
+          <div>
+            <Field
+              name="birthDate"
+              component={DatePicker}
+              validate={ageValidator.bind(null, 18)}
+            />
+
+            {errors.birthDate && touched.birthDate && (
+              <div>{errors.birthDate}</div>
+            )}
+          </div>
+
+          <div>
+            <Field
+              name="email"
+              placeholder="Email"
+              validate={emailValidator.bind(null, 'users', 'email', 'Email')}
+            />
+
+            {errors.email && touched.email && (
+              <div>{errors.email}</div>
+            )}
+          </div>
+
+          <div>
+            <Field
+              name="address"
+              placeholder="Address"
+            />
+
+            {errors.address && touched.address && (
+              <div>{errors.address}</div>
+            )}
+          </div>
+
+          <div>
+            Gender
+
+            <label>
+              female
+              <Field
+                name="gender"
+                type="radio"
+                checked={values.gender === 'female'}
+                validate={requiredValidator}
+                value="female"
+              />
+            </label>
+
+            <label>
+              male
+              <Field
+                name="gender"
+                type="radio"
+                checked={values.gender === 'male'}
+                validate={requiredValidator}
+                value="male"
+              />
+            </label>
+
+            {errors.gender && touched.gender && (
+              <div>{errors.gender}</div>
+            )}
+          </div>
 
           { back &&
             <button
               type="button"
-              onClick={onBack}
+              onClick={onBack.bind(null, values)}
             >
               { back }
             </button>

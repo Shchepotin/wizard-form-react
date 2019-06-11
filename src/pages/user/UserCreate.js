@@ -49,7 +49,12 @@ const UserCreate = ({ userDraft, receiveUserDraft, storeUserDraft, syncUserDraft
     setTab(tab);
   };
 
-  const onBack = (tab) => {
+  const onBack = (tab, values) => {
+    receiveUserDraft({
+      ...userDraft,
+      ...values,
+    });
+
     setTab(tab);
   };
 

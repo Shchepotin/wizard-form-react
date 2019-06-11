@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, FieldArray } from 'formik';
 import { withStyles } from '@material-ui/core/styles';
 
 // Styles
@@ -17,6 +17,7 @@ const ContactForm = ({ onSubmit, initialValues, back, onBack, onInput }) => {
         fax: initialValues.fax,
         githubLink: initialValues.githubLink,
         facebookLink: initialValues.facebookLink,
+        phones: initialValues.phones,
       }}
     >
       {({ errors, touched, values }) => (
@@ -28,10 +29,38 @@ const ContactForm = ({ onSubmit, initialValues, back, onBack, onInput }) => {
           <Field name="githubLink" placeholder="Github link" />
           <Field name="facebookLink" placeholder="facebookLink" />
 
+          <FieldArray
+            name="phones"
+            render={arrayHelpers => (
+              <div>
+                {values.phones && values.phones.length > 0 && (
+                  values.phones.map((phone, index) => (
+                    <div key={index}>
+                      <Field name={`phones.${index}`}/>
+                      {values.phones.length !== 1 && (
+                        <button
+                          type="button"
+                          onClick={() => arrayHelpers.remove(index)}
+                        >
+                          -
+                        </button>
+                      )}
+                    </div>
+                  ))
+                )}
+                { values.phones.length !== 3 && (
+                  <button type="button" onClick={() => arrayHelpers.push('')}>
+                    Add phone
+                  </button>
+                )}
+              </div>
+            )}
+          />
+
           { back &&
           <button
             type="button"
-            onClick={onBack}
+            onClick={onBack.bind(null, values)}
           >
             { back }
           </button>

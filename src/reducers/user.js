@@ -5,21 +5,7 @@ import {
 const initialState = {
   isFetching: false,
   isError: false,
-  item: {
-    avatar: null,
-    username: '',
-    password: '',
-    repeatPassword: '',
-    fistName: '',
-    lastName: '',
-    email: '',
-    company: '',
-    fax: '',
-    phones: [],
-    githubLink: '',
-    facebookLink: '',
-    additionalInfo: '',
-  },
+  item: {},
 };
 
 export default function reducer(state = initialState, action) {
