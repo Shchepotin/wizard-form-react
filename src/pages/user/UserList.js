@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { DateTime } from 'luxon';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -32,6 +33,9 @@ const UserList = ({ userList, requestUserList }) => {
                 >
                   { item.email }
                 </Link>
+              </td>
+              <td>
+                { DateTime.fromJSDate(item.updatedAt).toRelative() }
               </td>
             </tr>
           ))}

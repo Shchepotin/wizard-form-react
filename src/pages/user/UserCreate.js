@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { DateTime } from 'luxon';
 import { connect } from 'react-redux';
 import { useDebouncedCallback } from 'use-debounce';
 import { withStyles } from '@material-ui/core/styles';
@@ -32,6 +33,8 @@ const UserCreate = ({ userDraft, receiveUserDraft, storeUserDraft, syncUserDraft
     storeUserDraft({
       ...userDraft,
       ...values,
+      createdAt: DateTime.local().toJSDate(),
+      updatedAt: DateTime.local().toJSDate(),
     });
 
     // Reset

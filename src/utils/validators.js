@@ -25,7 +25,27 @@ export const requiredValidator = (value) => {
   return error;
 };
 
-export const uniqueValidator = async (table, field, name, value) => {
+export const maxLengthValidator = (length, value) => {
+  let error = null;
+
+  if (value && value.length > length) {
+    error = `To many symbols, expected ${length}`;
+  }
+
+  return error;
+};
+
+export const requiredItemValidator = (amount, value) => {
+  let error = null;
+
+  if (!value || (value && value.length < amount)) {
+    error = `Field is required and need select ${amount} options`;
+  }
+
+  return error;
+};
+
+export const uniqueValidator = async (initialValue, table, field, name, value) => {
   let error = null;
 
   if (requiredValidator(value)) {
@@ -37,7 +57,7 @@ export const uniqueValidator = async (table, field, name, value) => {
     .where(item => item[field].toLowerCase() === (value && value.toLowerCase()))
     .first();
 
-  if (user) {
+  if (user && initialValue !== value) {
     error = `${name} already used`;
   }
 
@@ -68,11 +88,21 @@ export const ageValidator = (minAge, value) => {
   return error;
 };
 
-export const emailValidator = async (table, field, name, value) => {
+export const emailValidator = async (initialValue, table, field, name, value) => {
   // eslint-disable-next-line
   if (value && !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(String(value).toLowerCase())) {
     return `Email is wrong`;
   }
 
-  return uniqueValidator(table, field, name, value);
+  return uniqueValidator(initialValue, table, field, name, value);
+};
+
+export const phoneValidator = async (name, value) => {
+  let error = null;
+
+  if (value && ! /^\+\d\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/g.test(value)) {
+    return `${name} is wrong`;
+  }
+
+  return error;
 };

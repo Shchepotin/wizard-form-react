@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DateTime } from "luxon";
 import { connect } from 'react-redux';
 
 // Actions
@@ -17,6 +18,7 @@ const ProfileEdit = ({ user, saveUser }) => {
     saveUser({
       ...user,
       ...values,
+      updatedAt: DateTime.local().toJSDate(),
     });
   };
 

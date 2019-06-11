@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
@@ -16,6 +16,12 @@ import {
 } from '../../utils/validators';
 
 const ProfileForm = ({ onSubmit, initialValues, onBack, back, onInput }) => {
+  const isLoaded = useMemo(() => Object.keys(initialValues).length !== 0, [initialValues]);
+
+  if (!isLoaded) {
+    return false;
+  }
+
   return (
     <Formik
       onSubmit={onSubmit}
@@ -76,7 +82,7 @@ const ProfileForm = ({ onSubmit, initialValues, onBack, back, onInput }) => {
             <Field
               name="email"
               placeholder="Email"
-              validate={emailValidator.bind(null, 'users', 'email', 'Email')}
+              validate={emailValidator.bind(null, initialValues.email, 'users', 'email', 'Email')}
             />
 
             {errors.email && touched.email && (

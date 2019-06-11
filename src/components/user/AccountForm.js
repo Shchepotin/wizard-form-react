@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
@@ -19,6 +19,12 @@ import {
 } from '../../utils/validators';
 
 const AccountForm = ({ onSubmit, initialValues, back, onBack, onInput }) => {
+  const isLoaded = useMemo(() => Object.keys(initialValues).length !== 0, [initialValues]);
+
+  if (!isLoaded) {
+    return false;
+  }
+
   return (
     <Formik
       onSubmit={onSubmit}
@@ -53,7 +59,7 @@ const AccountForm = ({ onSubmit, initialValues, back, onBack, onInput }) => {
             <Field
               name="username"
               placeholder="User name"
-              validate={uniqueValidator.bind(null, 'users', 'username', 'User name')}
+              validate={uniqueValidator.bind(null, initialValues.username, 'users', 'username', 'User name')}
             />
 
             {errors.username && touched.username && (

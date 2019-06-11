@@ -24,6 +24,7 @@ export default class Database {
 
         connection.onupgradeneeded = e => {
           const db = e.target.result;
+          const transaction = e.target.transaction;
 
           if (!db.objectStoreNames.contains('userDraft')) {
             db.createObjectStore('userDraft', {
@@ -35,6 +36,100 @@ export default class Database {
             db.createObjectStore('users', {
               keyPath: 'id',
               autoIncrement: true,
+            });
+          }
+
+          if (!db.objectStoreNames.contains('languages')) {
+            db.createObjectStore('languages', {
+              keyPath: 'id',
+            });
+
+            const languages = {
+              "en": "English",
+              "fr": "French",
+              "es": "Spanish",
+              "ar": "Arabic",
+              "cmn": "Mandarin",
+              "ru": "Russian",
+              "pt": "Portuguese",
+              "de": "German",
+              "ja": "Japanese",
+              "hi": "Hindi",
+              "ms": "Malay",
+              "fa": "Persian",
+              "sw": "Swahili",
+              "ta": "Tamil",
+              "it": "Italian",
+              "nl": "Dutch",
+              "bn": "Bengali",
+              "tr": "Turkish",
+              "vi": "Vietnamese",
+              "pl": "Polish",
+              "jv": "Javanese",
+              "pa": "Punjabi",
+              "th": "Thai",
+              "ko": "Korean"
+            };
+
+            Object.keys(languages).forEach((id) => {
+              transaction.objectStore('languages')
+                .put({
+                  id,
+                  value: id,
+                  label: languages[id],
+                });
+            });
+          }
+
+          if (!db.objectStoreNames.contains('skills')) {
+            db.createObjectStore('skills', {
+              keyPath: 'id',
+            });
+
+            const skills = [
+              {id: 1, value: 1, label: "HTML"},
+              {id: 2, value: 2, label: "CSS"},
+              {id: 3, value: 3, label: "Javascript"},
+              {id: 4, value: 4, label: "React"},
+              {id: 5, value: 5, label: "Angular"},
+              {id: 6, value: 6, label: "jQuery"},
+              {id: 7, value: 7, label: "NodeJS"},
+              {id: 8, value: 8, label: "Python"},
+              {id: 9, value: 9, label: "PHP"},
+              {id: 10, value: 10, label: "Ruby On Rails"},
+              {id: 11, value: 11, label: "SQL"},
+              {id: 12, value: 12, label: "BackboneJS"},
+              {id: 13, value: 13, label: "Web Design"},
+              {id: 14, value: 14, label: "Project management"},
+              {id: 15, value: 15, label: "Git"},
+              {id: 16, value: 16, label: "Docker"},
+              {id: 17, value: 17, label: "AWS Lambda"},
+              {id: 18, value: 18, label: "Firebase"},
+            ];
+
+            skills.forEach((item) => {
+              transaction.objectStore('skills')
+                .put(item);
+            });
+          }
+
+          if (!db.objectStoreNames.contains('hobbies')) {
+            db.createObjectStore('hobbies', {
+              keyPath: 'id',
+            });
+
+            let hobbies = [
+              {id: 1, value: 1, label: "Art"},
+              {id: 2, value: 2, label: "Sport, fitness, aerobica and staff like that"},
+              {id: 3, value: 3, label: "I just want to play games, I’m not living in this life"},
+              {id: 4, value: 4, label: "I’m a female... I’m doing nothing. Every day."},
+              {id: 5, value: 5, label: "Guitar, guitar and guitar again. I’m fall in love with it."},
+              {id: 6, value: 6, label: "WTF is “hobbies”???"},
+            ];
+
+            hobbies.forEach((item) => {
+              transaction.objectStore('hobbies')
+                .put(item);
             });
           }
         };
@@ -70,7 +165,7 @@ export default class Database {
         .put(data);
 
       request.onsuccess = (e) => {
-        resolve({ id: e.target.result, ...data, });
+        resolve({id: e.target.result, ...data,});
       };
     });
   }

@@ -18,10 +18,15 @@ const initialState = {
     gender: null,
     company: '',
     fax: '',
+    skills: null,
+    hobbies: null,
     phones: [''],
     githubLink: '',
     facebookLink: '',
+    mainLanguage: null,
     additionalInfo: '',
+    createdAt: null,
+    updatedAt: null,
   },
 };
 
